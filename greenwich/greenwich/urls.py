@@ -15,10 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from register import views
+from register import views as register
+from reminder import views as reminder
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'register', views.register, name='register'),
-    url(r'create_account', views.create_account, name='create_account')
+    url(r'^register/', register.register, name='register'),
+    url(r'^create_account/', register.create_account, name='create_account'),
+    url(r'^create_reminder/', reminder.create_reminder, name='create_reminder'),
+    url(r'^add_reminder/', reminder.add_reminder, name='add_reminder')
 ]

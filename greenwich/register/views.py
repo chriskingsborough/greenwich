@@ -1,9 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
-from .forms import RegistrationForm
-
-# import pymysql
 import pymysql
 import random
 
@@ -18,15 +15,6 @@ def insert_user(data):
     )
 
     cursor = conn.cursor()
-
-    #TODO: fix this hack
-    pk_query = """
-    SELECT MAX(IFNULL(accountID, 0)) FROM account;
-    """
-
-    cursor.execute(pk_query)
-    pks = cursor.fetchall()
-    pk_id = pks[0][0] + 1
 
     clean_data = {}
 
@@ -50,18 +38,6 @@ def insert_user(data):
 
 # Create your views here.
 def register(request):
-
-    # if this is post request we process form data
-    if request.method == 'POST':
-        #create a form instance and populate it
-        form = RegistrationForm(request.POST)
-        # check whether it's valid
-        if form.is_valid():
-
-            return HttpResponseRedirect('/create_account/')
-
-    else:
-        form = RegistrationForm()
 
     return render(request, 'register/registration.html')
 
