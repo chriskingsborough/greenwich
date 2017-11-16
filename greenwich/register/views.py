@@ -8,8 +8,8 @@ import random
 def insert_user(data):
 
     conn = pymysql.connect(
-        host='192.168.1.18',
-        user='Chris',
+        host='45.55.47.192',
+        user='chris',
         password='halo',
         database='kronos'
     )
@@ -23,8 +23,7 @@ def insert_user(data):
 
 
     query = """
-    INSERT INTO account (accountName, firstName, lastName, email, phoneNumber)
-    VALUES ('{username}', '{first_name}', '{last_name}', '{email}', '{phone_number}')
+    CALL insert_account('{username}', '{first_name}', '{last_name}', '{email}', '{phone_number}');
     """.format(
         **clean_data
     )

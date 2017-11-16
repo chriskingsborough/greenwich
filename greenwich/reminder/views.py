@@ -24,8 +24,8 @@ def insert_event(data):
     """insert an event"""
 
     conn = pymysql.connect(
-        host='192.168.1.18',
-        user='Chris',
+        host='45.55.47.192',
+        user='chris',
         password='halo',
         database='kronos'
     )

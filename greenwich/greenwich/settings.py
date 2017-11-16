@@ -25,7 +25,7 @@ SECRET_KEY = 'miuwldv^^)+*$rj5#*4=714=$+v!@3g*9)eh!%*t_y8i7$8$6o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['45.55.47.192']
 
 
 # Application definition
@@ -79,9 +79,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kronos',
-        'USER': 'Chris',
+        'USER': 'chris',
         'PASSWORD': 'halo',
-        'HOST': '192.168.1.18',
+        'HOST': '45.55.47.192',
         'PORT': '3306'
     }
 }
