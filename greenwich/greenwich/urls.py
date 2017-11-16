@@ -17,8 +17,10 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from register import views as register
 from reminder import views as reminder
+from index import views as index
 
 urlpatterns = [
+    url(r'^$', index.index, name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^register/', register.register, name='register'),
     url(r'^create_account/', register.create_account, name='create_account'),

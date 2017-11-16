@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
 import pymysql
-import random
 
 # Insert a user
 def insert_user(data):
