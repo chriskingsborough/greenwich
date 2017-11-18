@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate
 
 # Create your views here.
 def index(request):
-    import pdb; pdb.set_trace()
     if request.session['id'] is not None:
         return render(request, 'index/index.html')
     else:
