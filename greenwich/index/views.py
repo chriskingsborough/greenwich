@@ -5,7 +5,8 @@ from django.contrib.auth import authenticate
 
 # Create your views here.
 def index(request):
-    if request.session['id'] is not None:
+
+    if 'id' in request.session.keys():
         return render(request, 'index/index.html')
     else:
         return redirect('/sign_in/')
