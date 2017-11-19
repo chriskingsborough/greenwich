@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^$', index.index, name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^login/', index._login, name='login'),
+    url(r'^logout/', index.logout),
+    url(r'^create_user/', index.create_user),
     url(r'^sign_in/', index.sign_in, name='sign_in'),
     url(r'^register/', register.register, name='register'),
     url(r'^create_account/', register.create_account, name='create_account'),
