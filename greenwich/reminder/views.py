@@ -3,13 +3,14 @@ from reminder.forms import EventForm
 
 def add_event(request):
     # if this is a POST request we need to process the form data
-    import pdb; pdb.set_trace()
+
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = EventForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
             form_data = form.cleaned_data()
+            new_event = Event
             if form_data['warning'] == 1:
                 warning_next_send = form_data['event_date'] #plus time delta...
             else:
