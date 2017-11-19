@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from register import views as register
 from reminder import views as reminder
 from index import views as index
 
@@ -26,8 +25,5 @@ urlpatterns = [
     url(r'^logout/', index.logout),
     url(r'^create_user/', index.create_user),
     url(r'^sign_in/', index.sign_in, name='sign_in'),
-    url(r'^register/', register.register, name='register'),
-    url(r'^create_account/', register.create_account, name='create_account'),
-    url(r'^create_reminder/', reminder.create_reminder, name='create_reminder'),
-    url(r'^add_reminder/', reminder.add_reminder, name='add_reminder')
+    url(r'^create_reminder/', reminder.add_event)
 ]

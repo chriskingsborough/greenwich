@@ -32,7 +32,6 @@ ALLOWED_HOSTS = ['45.55.47.192', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     'index',
-    'register',
     'reminder',
     'django.contrib.admin',
     'django.contrib.auth',

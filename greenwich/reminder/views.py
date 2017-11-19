@@ -1,55 +1,45 @@
 from django.shortcuts import render
+from reminder.forms import EventForm
 
-import pymysql
-
-# Create your views here.
-def create_reminder(request):
-
-    return render(request, 'reminder/create_reminder.html')
-
-def add_reminder(request):
-
-    # check method of request is POST
+def add_event(request):
+    # if this is a POST request we need to process the form data
+    import pdb; pdb.set_trace()
     if request.method == 'POST':
-
-        # extract data from request
-        data = request.POST
+        # create a form instance and populate it with data from the request:
+        form = EventForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            form_data = form.cleaned_data()
+            if form_data['warning'] == 1:
+                warning_next_send = form_data['event_date'] #plus time delta...
+            else:
+                warning_next_send = None
+            new_row = Event.objects.create(
+                user_id = models.ForeignKey(auth_user, on_delete=models.CASCADE),
+                event_name = form_data['event_name'],
+                recurring = form_data['recurring'],
+                date_type = form_data['date_type'],
+                message = form_data['message'],
+                created = datetime.datetime.now(),
+                start_date = form_data['event_date'],
+                end_date = form_data['end_date'],
+                last_send = None,
+                next_send = form_data['event_date'],
+                interval = form_data['interval'],
+                interval_type = form_data['interval_type'],
+                snooze = 0,
+                snooze_interval = None,
+                snooze_interval_type = None,
+                snooze_last_send = None,
+                snooze_next_send = None,
+                warning = form_data['warning'],
+                warning_interval = form_data['warning_interval'],
+                warning_interval_type = form_data['warning_interval'],
+                warning_next_send = warning_next_send,
+                in_deleted = 0,
+            )
+    else:
+        form = EventForm()
     
-        # insert a user
-        insert_event(data)
 
-    return render(request, 'reminder/reminder_created.html')
-
-def insert_event(data):
-    """insert an event"""
-
-    conn = pymysql.connect(
-        host='45.55.47.192',
-        user='chris',
-        password='halo',
-        database='kronos'
-    )
-
-    cursor = conn.cursor()
-
-    clean_data = {}
-
-    for key, value in data.items():
-
-        clean_data[key] = value 
-
-    if 'event_type' not in clean_data:
-        clean_data['event_type'] = 'non-recurring'
-
-    query = """
-    CALL insert_event('{event_name}', '{event_type}', '{event_message}', '{recurrance_frequency}', 1, '{start_date}', '{end_date}')
-    """.format(
-        **clean_data
-    )
-
-    cursor.execute(query)
-
-    cursor.close()
-
-    conn.commit()
-    conn.close()
+    return render(request, 'reminder/new_event.html', {'form': form})
