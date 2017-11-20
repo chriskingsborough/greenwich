@@ -45,7 +45,7 @@ def add_event(request):
                 snooze_next_send = None,
                 warning = form_data['warning'],
                 warning_interval = form_data['warning_interval'],
-                warning_interval_type = form_data['warning_interval'],
+                warning_interval_type = form_data['warning_interval_type'],
                 warning_next_send = warning_next_send,
                 in_deleted = 0,
             )
