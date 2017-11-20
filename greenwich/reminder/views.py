@@ -6,6 +6,11 @@ from reminder import models
 import datetime
 
 def add_event(request):
+
+    # redirect to sign in not logged in
+    if 'id' not in request.session.keys():
+        return redirect('/sign_in/')
+
     # if this is a POST request we need to process the form dat
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
