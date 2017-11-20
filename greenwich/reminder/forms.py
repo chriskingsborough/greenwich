@@ -30,10 +30,8 @@ class EventForm(ModelForm):
             'start_date': DateInput(),
             'end_date': DateInput(),
             'interval': forms.NumberInput(),
-            'interval_type': forms.TextInput(),
             'warning': forms.NullBooleanSelect(),
             'warning_interval': forms.NumberInput(),
-            'warning_interval_type': forms.TextInput(),
             'date_type': forms.TextInput()
         }
 
