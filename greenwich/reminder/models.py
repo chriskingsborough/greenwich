@@ -2,6 +2,8 @@ from django.db import models
 from index.models import User
 
 # Create your models here.
+
+
 class Event(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     event_name = models.CharField(max_length=500)
@@ -37,3 +39,10 @@ class Event(models.Model):
         ('month', 'month(s)'),
         ('year', 'year(s)')
     )
+
+
+class MessageLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    sent = models.DateTimeField()
+    phone_number = models.CharField(max_length=50)

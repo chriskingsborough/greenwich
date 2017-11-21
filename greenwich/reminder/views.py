@@ -19,41 +19,53 @@ def add_event(request):
         # check whether it's valid:
         if form.is_valid():
             form_data = form.cleaned_data
+
             if form_data['warning'] == 1:
-                warning_next_send = form_data['start_date'] #plus time delta...
+                if form_data['warning_interval_type'] == 'day':
+                    warning_next_send = form_data['start_date'] \
+                                        - relativedelta(days=form_data['warning_interval'])
+                elif form_data['warning_interval_type'] == 'week':
+                    warning_next_send = form_data['start_date'] \
+                                        - relativedelta(weeks=form_data['warning_interval'])
+                elif form_data['warning_interval_type'] == 'month':
+                    warning_next_send = form_data['start_date'] \
+                                        - relativedelta(months=form_data['warning_interval'])
+                elif form_data['warning_interval_type'] == 'year':
+                    warning_next_send = form_data['start_date'] \
+                                        - relativedelta(years=form_data['warning_interval'])
+                else:
+                    warning_next_send = None
             else:
                 warning_next_send = None
             
             current_user = User.objects.get(pk=request.user.id)
             new_row = Event(
-                user_id = current_user,
-                event_name = form_data['event_name'],
-                recurring = form_data['recurring'],
-                date_type = form_data['date_type'],
-                message = form_data['message'],
-                created = datetime.datetime.now(),
-                start_date = form_data['start_date'],
-                end_date = form_data['end_date'],
-                last_send = None,
-                next_send = form_data['start_date'],
-                interval = form_data['interval'],
-                interval_type = form_data['interval_type'],
-                snooze = 0,
-                snooze_interval = None,
-                snooze_interval_type = None,
-                snooze_last_send = None,
-                snooze_next_send = None,
-                warning = form_data['warning'],
-                warning_interval = form_data['warning_interval'],
-                warning_interval_type = form_data['warning_interval_type'],
-                warning_next_send = warning_next_send,
-                in_deleted = 0,
+                user_id=current_user,
+                event_name=form_data['event_name'],
+                recurring=form_data['recurring'],
+                date_type=form_data['date_type'],
+                message=form_data['message'],
+                created=datetime.datetime.now(),
+                start_date=form_data['start_date'],
+                end_date=form_data['end_date'],
+                last_send=None,
+                next_send=form_data['start_date'],
+                interval=form_data['interval'],
+                interval_type=form_data['interval_type'],
+                snooze=0,
+                snooze_interval=None,
+                snooze_interval_type=None,
+                snooze_last_send=None,
+                snooze_next_send=None,
+                warning=form_data['warning'],
+                warning_interval=form_data['warning_interval'],
+                warning_interval_type=form_data['warning_interval_type'],
+                warning_next_send=warning_next_send,
+                in_deleted=0,
             )
             new_row.save()
             return redirect('/')
     else:
         form = EventForm()
-    
-    #this doesnt really work idk what it is
-    #also the next send warning needs to be updated to add the warning time delta
+
     return render(request, 'reminder/new_event.html', {'form': form})
