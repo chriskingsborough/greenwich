@@ -63,7 +63,7 @@ def add_event(request):
                 in_deleted=0,
             )
             new_row.save()
-            return redirect('/reminder/view_reminders/')
+            return redirect('/view_reminders/')
     else:
         form = EventForm()
 
