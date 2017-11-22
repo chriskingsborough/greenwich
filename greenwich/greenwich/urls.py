@@ -25,5 +25,7 @@ urlpatterns = [
     url(r'^logout/', index.logout),
     url(r'^create_user/', index.create_user),
     url(r'^sign_in/', index.sign_in, name='sign_in'),
-    url(r'^create_reminder/', reminder.add_event)
+    url(r'^create_reminder/', reminder.add_event),
+    url(r'^view_reminders/', reminder.view_events),
+    url(r'^edit_reminder/$', reminder.edit_event)
 ]

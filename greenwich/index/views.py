@@ -13,9 +13,11 @@ def index(request):
     else:
         return redirect('/sign_in/')
 
+
 def sign_in(request):
 
     return render(request, 'index/sign_in.html')
+
 
 def _login(request):
     data = request.POST
@@ -31,11 +33,13 @@ def _login(request):
     else:
         return redirect('/sign_in/')
 
+
 def logout(request):
 
     del request.session['id']
 
     return redirect('/sign_in/')
+
 
 def create_user(request):
 
@@ -50,4 +54,4 @@ def create_user(request):
     else:
         form = UserForm()
     
-    return render(request, 'index/create_user.html', {'form':form})
+    return render(request, 'index/create_user.html', {'form': form})

@@ -12,10 +12,8 @@ class EventForm(ModelForm):
         fields = [
             'event_name',
             'message',
-
             'start_date',
             'end_date',
-
             'recurring',
             'interval',
             'interval_type',

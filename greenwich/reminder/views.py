@@ -63,8 +63,34 @@ def add_event(request):
                 in_deleted=0,
             )
             new_row.save()
-            return redirect('/')
+            return redirect('/reminder/view_reminders/')
     else:
         form = EventForm()
 
     return render(request, 'reminder/new_event.html', {'form': form})
+
+
+def view_events(request):
+
+    if 'id' not in request.session.keys():
+        return redirect('/sign_in/')
+
+    events = Event.objects.filter(user_id=request.user.id)
+    context = {'events': events}
+
+    return render(request, 'reminder/view_reminders.html', context)
+
+def edit_event(request):
+
+    if 'id' not in request.session.keys():
+        return redirect('/sign_in/')
+    #check to make sure user logged in is associated with event - event ID may be public in the URL
+
+    current_event = Event.objects.get(pk=request.user.id)
+
+
+    pass
+
+
+
+
