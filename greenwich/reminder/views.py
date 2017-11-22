@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from reminder.forms import EventForm
 from reminder.models import Event
 from index.models import User
-from reminder import models
 import datetime
+from dateutil.relativedelta import relativedelta
 
 def add_event(request):
 
@@ -40,10 +40,9 @@ def add_event(request):
             
             current_user = User.objects.get(pk=request.user.id)
             new_row = Event(
-                user_id=current_user,
+                user=current_user,
                 event_name=form_data['event_name'],
                 recurring=form_data['recurring'],
-                date_type=form_data['date_type'],
                 message=form_data['message'],
                 created=datetime.datetime.now(),
                 start_date=form_data['start_date'],

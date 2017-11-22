@@ -11,27 +11,27 @@ class EventForm(ModelForm):
         model = Event
         fields = [
             'event_name',
-            'recurring',
             'message',
+
             'start_date',
             'end_date',
+
+            'recurring',
             'interval',
             'interval_type',
             'warning',
             'warning_interval',
-            'warning_interval_type',
-            'date_type'
+            'warning_interval_type'
         ]
 
         widgets = {
             'event_name': forms.TextInput(),
-            'recurring': forms.NullBooleanSelect(),
+            'recurring': forms.CheckboxInput(),
             'message': forms.TextInput(),
             'start_date': DateInput(),
             'end_date': DateInput(),
             'interval': forms.NumberInput(),
-            'warning': forms.NullBooleanSelect(),
-            'warning_interval': forms.NumberInput(),
-            'date_type': forms.TextInput()
+            'warning': forms.CheckboxInput(),
+            'warning_interval': forms.NumberInput()
         }
 

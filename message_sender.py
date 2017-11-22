@@ -9,7 +9,7 @@ def get_messages():
     conn = pymysql.connect(
         host='45.55.47.192',
         user='david',
-        password='41willow',
+        password='Celtics1!',
         database='kronos'
     )
 
@@ -31,67 +31,72 @@ def update_send_dates(event_id,
                       is_warning):
 
     now = datetime.datetime.now()
-    if recurring == 0:
-        next_send_updated = '9999-12-31'
+
+    if is_warning == 1:
+        pass
+
     else:
-        if interval_delta == 'day':
-            next_send_updated = now + relativedelta(days=interval)
-      #      next_send_updated = datetime.datetime.strftime(next_send_updated, '%Y-%m-%d')
-        elif interval_delta == 'week':
-            next_send_updated = now + relativedelta(weeks=interval)
-       #     next_send_updated = datetime.datetime.strftime(next_send_updated, '%Y-%m-%d')
-        elif interval_delta == 'month':
-            next_send_updated = now + relativedelta(months=interval)
-        #    next_send_updated = datetime.datetime.strftime(next_send_updated, '%Y-%m-%d')
-        elif interval_delta == 'year':
-            next_send_updated = now + relativedelta(years=interval)
-        #    next_send_updated = datetime.datetime.strftime(next_send_updated, '%Y-%m-%d')
-        else:
+        if recurring == 0:
             next_send_updated = '9999-12-31'
-    if warning == 1:
-        if warning_interval_delta == 'day':
-            warning_next_send_updated = next_send_updated - relativedelta(days=warning_interval)
-        #    warning_next_send_updated = datetime.datetime.strftime(warning_next_send_updated, '%Y-%m-%d')
-        elif warning_interval_delta == 'week':
-            warning_next_send_updated = next_send_updated - relativedelta(weeks=warning_interval)
-         #   warning_next_send_updated = datetime.datetime.strftime(warning_next_send_updated, '%Y-%m-%d')
-        elif warning_interval_delta == 'month':
-            warning_next_send_updated = next_send_updated - relativedelta(months=warning_interval)
-        #    warning_next_send_updated = datetime.datetime.strftime(warning_next_send_updated, '%Y-%m-%d')
-        elif warning_interval_delta == 'year':
-            warning_next_send_updated = next_send_updated - relativedelta(years=warning_interval)
-         #   warning_next_send_updated = datetime.datetime.strftime(warning_next_send_updated, '%Y-%m-%d')
-        else:
             warning_next_send_updated = '9999-12-31'
 
-    else:
-        warning_next_send_updated = None
+        else:
+            if interval_delta == 'day':
+                next_send_updated = now + relativedelta(days=interval)
+            elif interval_delta == 'week':
+                next_send_updated = now + relativedelta(weeks=interval)
+            elif interval_delta == 'month':
+                next_send_updated = now + relativedelta(months=interval)
+            elif interval_delta == 'year':
+                next_send_updated = now + relativedelta(years=interval)
+            else:
+                next_send_updated = '9999-12-31'
 
-    if is_warning == 0:
+            if warning == 1:
+                if warning_interval_delta == 'day':
+                    warning_next_send_updated = next_send_updated - relativedelta(days=warning_interval)
+                elif warning_interval_delta == 'week':
+                    warning_next_send_updated = next_send_updated - relativedelta(weeks=warning_interval)
+                elif warning_interval_delta == 'month':
+                    warning_next_send_updated = next_send_updated - relativedelta(months=warning_interval)
+                elif warning_interval_delta == 'year':
+                    warning_next_send_updated = next_send_updated - relativedelta(years=warning_interval)
 
         conn = pymysql.connect(
             host='45.55.47.192',
             user='david',
-            password='41willow',
+            password='Celtics1!',
             database='kronos'
         )
 
-        cursor = conn.cursor()
-
-        query = "CALL update_next_send('{next_send}', '{warning_next_send}', '{event_id}');".format(
+        query = "CALL update_next_send('{next_send}','{warning_next_send}','{event_id}');".format(
             event_id=event_id,
             next_send=next_send_updated,
             warning_next_send=warning_next_send_updated
         )
 
+        cursor = conn.cursor()
         cursor.execute(query)
         conn.commit()
         conn.close()
 
 
-def update_message_log(messages):
-    pass
-    #need to figure out django inside of this script...
+def update_message_log(event_id,user_id,phone_number):
+    conn = pymysql.connect(
+        host='45.55.47.192',
+        user='david',
+        password='Celtics1!',
+        database='kronos'
+    )
+
+    sql = "insert into reminder_messagelog (user_id, event_id , sent, phone_number)\
+    values('{}','{}','{}','{}')".format(
+        user_id, event_id,  datetime.datetime.now(), phone_number)
+
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    conn.commit()
+    conn.close()
 
 
 def send_messages(messages, client):
@@ -107,6 +112,7 @@ def send_messages(messages, client):
         warning_interval_delta = message[7]
         warning = message[8]
         is_warning = message[9]
+        user_id = message[10]
 
         phone_number = phone_number.replace(' ', '')
         phone_number = phone_number.replace('-', '')
@@ -120,13 +126,17 @@ def send_messages(messages, client):
         )
 
         update_send_dates(event_id,
-                      recurring,
-                      warning,
-                      interval,
-                      interval_delta,
-                      warning_interval,
-                      warning_interval_delta,
-                      is_warning)
+                          recurring,
+                          warning,
+                          interval,
+                          interval_delta,
+                          warning_interval,
+                          warning_interval_delta,
+                          is_warning)
+
+        update_message_log(event_id,
+                           user_id,
+                           phone_number)
 
 
 def main():
@@ -139,7 +149,7 @@ def main():
     print(todays_messages)
 
     if len(todays_messages) > 0:
-       send_messages(todays_messages, twilio_client)
+        send_messages(todays_messages, twilio_client)
 
 
 if __name__ == '__main__':
