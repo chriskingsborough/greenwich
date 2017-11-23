@@ -5,7 +5,9 @@
             <td>next send</td>
             <td>every</td>
             <td>warning me</td>
-            <td></td>
+            <td>Edit</td>
+            <td>View</td>
+            <td>Delete</td>
         </tr>
     {% for row in events %}
         <tr>
@@ -14,9 +16,12 @@
             <td>{{ row.interval }} {{ row.interval_type }}</td>
             <td>{{ row.warning_interval }} {{ row.warning_interval_type }} before</td>
             <td><a href="/edit_reminder/?id={{ row.id }}">{{row.id}}</a></td>
+            <td><a href="/view_reminder/?id={{ row.id }}">{{row.id}}</a></td>
+            <td><a href="/delete_reminder/?id={{ row.id }}">{{row.id}}</a></td>
         </tr>
     {% endfor %}
     </table>
 {% else %}
     <p>No events.</p>
 {% endif %}
+<a href="/">Home</a>

@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from reminder.forms import EventForm
 from reminder.models import Event
 from index.models import User
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+
 import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -14,7 +17,7 @@ def add_event(request):
     # if this is a POST request we need to process the form dat
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        # import pdb; pdb.set_trace()
+
         form = EventForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
@@ -75,7 +78,8 @@ def view_events(request):
     if 'id' not in request.session.keys():
         return redirect('/sign_in/')
 
-    events = Event.objects.filter(user_id=request.user.id)
+    events = Event.objects.filter(user_id=request.user.id).reverse()
+
     context = {'events': events}
 
     return render(request, 'reminder/view_reminders.html', context)
@@ -84,13 +88,45 @@ def edit_event(request):
 
     if 'id' not in request.session.keys():
         return redirect('/sign_in/')
-    #check to make sure user logged in is associated with event - event ID may be public in the URL
+    #TODO: check to make sure user logged in is associated with event - event ID may be public in the URL
 
-    current_event = Event.objects.get(pk=request.user.id)
+    # get event ID from querystring
+    event_id = request.GET['id']
+    # pass event ID to Event model to pull current event
+    current_event = Event.objects.get(pk=event_id)
 
+    form = EventForm(request.POST or None, instance=current_event)
+    if request.POST and form.is_valid():
+        form.save()
 
-    pass
+        # Save was successful
+        redirect_url = '/view_reminders/'
+        return redirect(redirect_url)
 
+    context = {'form': form}
 
+    return render(request, 'reminder/edit_reminder.html', context=context)
 
+def view_reminder(request):
+    if 'id' not in request.session.keys():
+        return redirect('/sign_in/')
 
+    event_id = request.GET['id']
+
+    current_event = Event.objects.get(pk=event_id)
+
+    context = {'event': current_event}
+
+    return render(request, 'reminder/view_reminder.html', context=context)
+
+def delete_reminder(request):
+    if 'id' not in request.session.keys():
+        return redirect('/sign_in/')
+
+    event_id = request.GET['id']
+
+    current_event = Event.objects.get(pk=event_id)
+
+    current_event.delete()
+
+    return redirect('/view_reminders/')

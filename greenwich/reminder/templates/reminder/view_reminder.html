@@ -1,0 +1,10 @@
+<h3>{{ event.event_name }}</h3>
+<p>{{ event.message }}</p>
+<p>Next send: {{ event.next_send }}</p>
+
+<br>
+<a href=/view_reminders/>View Reminders</a>
+<br>
+<a href="/edit_reminder/?id={{ event.id }}">Edit Reminder</a>
+<br>
+<a href="/delete_reminder/?id={{ event.id }}">Delete Reminder</a>
