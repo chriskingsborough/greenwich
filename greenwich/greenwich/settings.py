@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'greenwich.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kronos',
-        'USER': 'chris',
-        'PASSWORD': 'halo',
-        'HOST': '45.55.47.192',
-        'PORT': '3306'
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': ''
     }
 }
 
